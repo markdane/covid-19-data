@@ -1,0 +1,39 @@
+---
+title: "Columbia Gorge Covid-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+
+```{r load_data, echo=FALSE}
+
+Hood_river <- 41027
+Sherman <- 41055
+Wasco <- 41065
+Klickitat <- 53039
+Skamania <-  53059
+cg_df <- read_csv("us-counties.csv", col_types = cols(
+  date = col_date(format = ""),
+  county = col_character(),
+  state = col_character(),
+  fips = col_character(),
+  cases = col_double(),
+  deaths = col_double())) %>%
+  filter(fips %in% c(Hood_river, Sherman, Wasco, Klickitat, Skamania))
+
+```
+
+```{r visualize}
+
+p <- ggplot(cg_df, aes(x = date, y = cases, color = county)) +
+  geom_line()
+p <- p + geom_line(aes(y = deaths))
+p
+
+```
+
